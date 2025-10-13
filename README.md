@@ -1,14 +1,11 @@
 # COMP3000 - Computing Project
-****Project Title****
+## Project Title
+#### LLM-Powered Incident Response Assistant for SMEs
 
-LLM-Powered Incident Response Assistant for SMEs
-
-****Keywords****
-
+## Keywords
 Cyber-Security | Small/Medium-Sized Enterprises | Incident-Response | Large Language Models | Risk-Management | Communication | Mitigation | Affordability | Cybersecurity-Awareness | Artificial-Intelligence | LLMs | SMEs
 
-****Project Vision****
-
+## Project Vision
 Small and medium-sized enterprises (SMEs) are facing an increase in targeted cyberattacks but often lack the resources, expertise and awareness to respond to incidents effectively. The financial pressures brought on by the COVID-19 pandemic has forced many SMEs to prioritise the short-term business survival over the long-term cybersecurity investment. As a result, numerous SMEs are continuing to use outdated systems and are providing limited staff training, with many of them assuming that they are too small to be targeted – a misconception that has left them increasingly vulnerable. 
 
 While some SMEs use open-source or commercial detection tools, they struggle to interpret technical alerts and act upon them in a timely manner. This leads to delayed responses, poor incident communication, and greater financial and reputational damage. According to a 2025 Hiscox report, 59% of SMEs experienced a cyber-attack in the last 12 months, highlighting the urgency for further cybersecurity support.    
@@ -17,12 +14,10 @@ This project aims to address these challenges by developing an affordable, local
 
 Unlike existing AI SOC products that are cloud-based, expensive, and aimed at large enterprises, the goal for this assistant is to provide a low-cost, easy-to-use incident management dashboard that helps them understand what has happened, how serious it is, and what steps to take to mitigate the threat - without requiring deep technical knowledge. It will improve communication and awareness during and after incidents, helping SMEs to respond faster, make informed decisions, and overall strengthen their cyber resilience.  
 
-****Supervisor****
-
+****Supervisor:****
 Nathan Clarke 
 
-****Sources****
-
+****Sources:****
 https://www.hiscoxgroup.com/news/press-releases/2025/29-09-25 
 
 
