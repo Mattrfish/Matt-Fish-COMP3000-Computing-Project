@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0" version="29.1.0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0" version="29.1.1">
   <diagram name="Page-1" id="PG13ZAdTFAWxwRNRTccF">
-    <mxGraphModel dx="1042" dy="659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1426" dy="778" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -156,7 +156,7 @@
         <mxCell id="KS4F58fqtQe9udTE9IPP-4" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="View Analytics" vertex="1">
           <mxGeometry height="80" width="120" x="250" y="140" as="geometry" />
         </mxCell>
-        <mxCell id="KS4F58fqtQe9udTE9IPP-9" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="Update Settings" vertex="1">
+        <mxCell id="KS4F58fqtQe9udTE9IPP-9" parent="1" style="ellipse;whiteSpace=wrap;html=1;" value="View Settings" vertex="1">
           <mxGeometry height="80" width="120" x="130" y="250" as="geometry" />
         </mxCell>
         <mxCell id="KS4F58fqtQe9udTE9IPP-16" edge="1" parent="1" source="KS4F58fqtQe9udTE9IPP-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=1;entryDx=0;entryDy=0;" target="O1Eq9wWu1iHNkpG0AZi9-65">

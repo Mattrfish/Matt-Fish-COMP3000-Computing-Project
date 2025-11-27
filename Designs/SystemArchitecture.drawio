@@ -1,0 +1,106 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 Firefox/145.0" version="29.1.1">
+  <diagram name="System Architecture" id="2YBvvXClWsGukQMizWep">
+    <mxGraphModel dx="1042" dy="659" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Layer_Frontend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;dashed=1;fillColor=#f5f5f5;fontStyle=1;strokeColor=#666666;" value="PRESENTATION LAYER&amp;nbsp;" vertex="1">
+          <mxGeometry height="480" width="200" x="120" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Layer_Backend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;dashed=1;fillColor=#dae8fc;fontStyle=1;strokeColor=#6c8ebf;" value="APPLICATION LOGIC (Firebase / Serverless)" vertex="1">
+          <mxGeometry height="480" width="280" x="400" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="Layer_Data" parent="1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;align=left;spacingLeft=10;dashed=1;fillColor=#fff2cc;fontStyle=1;strokeColor=#d6b656;" value="DATA &amp; EXTERNAL SERVICES" vertex="1">
+          <mxGeometry height="480" width="240" x="760" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="User" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="User" vertex="1">
+          <mxGeometry height="60" width="30" x="40" y="280" as="geometry" />
+        </mxCell>
+        <mxCell id="AuthUI" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Auth Interface&#xa;(Login/API Keys)" vertex="1">
+          <mxGeometry height="50" width="160" x="140" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="UploadUI" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Log Upload &amp;&#xa;Validation UI" vertex="1">
+          <mxGeometry height="60" width="160" x="140" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="DashboardUI" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Analytics Dashboard&#xa;(Charts/Metrics)" vertex="1">
+          <mxGeometry height="60" width="160" x="140" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="IncidentUI" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;" value="Incident Detail View&#xa;(Filters/Search)" vertex="1">
+          <mxGeometry height="60" width="160" x="140" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="IngestService" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Ingestion Service&#xa;(Sanitizer &amp; Parser)" vertex="1">
+          <mxGeometry height="60" width="200" x="440" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="AI_Orchestrator" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="AI Orchestration Service&#xa;(Prompt Engineer + RAG)" vertex="1">
+          <mxGeometry height="60" width="200" x="440" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="NotifyService" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Notification Engine&#xa;(High Risk Alerts)" vertex="1">
+          <mxGeometry height="50" width="200" x="440" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="Firestore" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Firebase Firestore&#xa;(Logs, Users, Metadata)" vertex="1">
+          <mxGeometry height="80" width="160" x="800" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="Secrets" parent="1" style="shape=card;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" value="Secrets Manager&#xa;(API Keys)" vertex="1">
+          <mxGeometry height="50" width="160" x="800" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Ext_LLM" parent="1" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="External LLM API&#xa;(OpenAI/Anthropic)" vertex="1">
+          <mxGeometry height="90" width="160" x="800" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="RAG_DB" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#ffe6cc;strokeColor=#d79b00;" value="RAG Knowledge Base&#xa;(MITRE ATT&amp;CK)" vertex="1">
+          <mxGeometry height="60" width="120" x="820" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" edge="1" parent="1" source="User" target="DashboardUI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" edge="1" parent="1" source="User" target="UploadUI">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" edge="1" parent="1" source="UploadUI" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="IngestService" value="Upload Log">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" edge="1" parent="1" source="AuthUI" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" target="Secrets" value="Store Keys">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="320" y="155" />
+              <mxPoint x="320" y="145" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" edge="1" parent="1" source="IngestService" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="AI_Orchestrator" value="Parsed JSON">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" edge="1" parent="1" source="AI_Orchestrator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Ext_LLM" value="Send Prompt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_rag" edge="1" parent="1" source="AI_Orchestrator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" target="RAG_DB" value="Fetch Context">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="640" y="340" />
+              <mxPoint x="640" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" edge="1" parent="1" source="AI_Orchestrator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="Firestore" value="Save Result">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="680" y="350" />
+              <mxPoint x="680" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" edge="1" parent="1" source="Firestore" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" target="DashboardUI" value="Realtime Updates">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="880" y="600" />
+              <mxPoint x="350" y="600" />
+              <mxPoint x="350" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" edge="1" parent="1" source="Firestore" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="NotifyService" value="Trigger Alert">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
