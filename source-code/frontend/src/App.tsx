@@ -17,9 +17,7 @@ function App(){
     return (
         <div>
 
-            {/* --- TEMPORARY TEST SECTION --- */}
-            <TestConnection />
-            {/* ----------------------------- */}
+            
             
             <NavBar 
                 brandName="Dashboard" 
@@ -32,6 +30,9 @@ function App(){
                 {activePage === "Analytics" && <Analytics />}
                 {activePage === "Incidents" && <Incidents />}
                 {activePage === "Settings" && <Settings />}
+                {/* --- TEMPORARY TEST SECTION --- */}
+                <TestConnection />
+                {/* ----------------------------- */}
             </div>
 
             
