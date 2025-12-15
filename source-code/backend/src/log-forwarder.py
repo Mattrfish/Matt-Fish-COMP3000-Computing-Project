@@ -1,11 +1,13 @@
 import os, datetime, sys, shutil, sys, json, re, cryptography
 from cryptography.fernet import Fernet 
 
-key = Fernet.generate_key() #randomly generate a key
-fernet = Fernet.generate_key
+#key = Fernet.generate_key() #randomly generate a key
+#fernet = Fernet.generate_key
 
-src_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//raw-logs" # directory where raw logs come from an ids
-dst_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//cleaned-logs" # raw logs cleaned and sent to dst
+src_dir = "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//raw-logs" #pc logs
+dst_dir= "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//cleaned-logs" #pc logs
+#src_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//raw-logs" # directory where raw logs come from an ids # laptop
+#dst_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//cleaned-logs" # raw logs cleaned and sent to dst #laptop
 
 acc_ext = [".log", ".txt"] # accepted file extensions
 #pattern_ip = re.search ("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}") #regex for log sanitisation
@@ -19,7 +21,7 @@ def split_file(file): #splits the file to get the extension
 
     # return both values
     return split_file[0], split_file[1]
-()
+
 
 def log_sanitiser(src_file):
     try: 
