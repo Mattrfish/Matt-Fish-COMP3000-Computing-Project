@@ -7,8 +7,8 @@ cred = credentials.Certificate(r"C:\Users\Matthew\Github\Year3\COMP3000-Computin
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-#key = Fernet.generate_key() #randomly generate a key
-#fernet = Fernet.generate_key
+encryption_key = Fernet.generate_key() #randomly generate a key 
+cipher = Fernet(encryption_key) # value of key assigned to var
 
 # Directories for pc and laptop 
 #src_dir = "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//raw-logs" #pc logs
@@ -138,8 +138,20 @@ def log_sanitiser(src_file):
  
             # batching logic
             if event["is_suspicious"]:
+
+                #encrypt files 
+                event_json = json.dumps(event, default=str).encode() # convert to json string and then to bytes
+                encrypted_token = cipher.encrypt(event_json).decode() # decode back to string for storage
+
+                # Firestore needs to recieve a dictionary { "key": "value" }
+                encrypted_payload = {
+                    "data": encrypted_token,
+                    "is_encrypted": True,
+                    "timestamp": firestore.SERVER_TIMESTAMP # used for sorting
+                }
+
                 # Push to Firestore
-                doc_ref = db.collection("incidents").add(event) 
+                doc_ref = db.collection("incidents").add(encrypted_payload) 
                 
                 # Add doc ID for later LLM updates
                 event['doc_id'] = doc_ref[1].id 
