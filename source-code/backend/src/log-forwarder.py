@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from google import genai
 from security.crypto import encrypt_payload # removed encryption within this file and added it to a new helper function 
 
-ENV_PATH = r"C:\Users\Matthew\Github\Year3\COMP3000-Computing-Project\source-code\backend\src\.env"
+current_dir = os.path.dirname(__file__)#trying to fix pathing issues between laptop and pc
+ENV_PATH = os.path.join(current_dir, ".env")
 load_dotenv(ENV_PATH)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -12,17 +13,18 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=GEMINI_API_KEY)
 
 # Initialise Firebase 
-cred = credentials.Certificate(r"C:\Users\Matthew\Github\Year3\COMP3000-Computing-Project\source-code\backend\src\serviceAccountKey.json")
+
+cred = credentials.Certificate(os.path.join(current_dir, "serviceAccountKey.json"))
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 local_time = datetime.datetime.now().isoformat() # timestamp for cleaned logs
 
 # Directories for pc and laptop 
-#src_dir = "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//raw-logs" #pc logs
-#dst_dir= "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//cleaned-logs" #pc logs
-src_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//raw-logs" # directory where raw logs come from an ids # laptop
-dst_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//cleaned-logs" # raw logs cleaned and sent to dst #laptop
+src_dir = "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//raw-logs" #pc logs
+dst_dir= "C://Users//mattr//Github//Matt-Fish-COMP3000-Computing-Project//source-code//backend//cleaned-logs" #pc logs
+#src_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//raw-logs" # directory where raw logs come from an ids # laptop
+#dst_dir = "C://Users//Matthew//Github//Year3//COMP3000-Computing-Project//source-code//backend//cleaned-logs" # raw logs cleaned and sent to dst #laptop
 
 # Config for sanitisation 
 acc_ext = [".log", ".txt"] # accepted file extensions
