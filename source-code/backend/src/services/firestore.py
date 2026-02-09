@@ -1,4 +1,4 @@
-import firebase_admin, os
+import firebase_admin, os, hashlib
 from firebase_admin import credentials, firestore
 from security.crypto import decrypt_payload
 
@@ -10,19 +10,41 @@ if not firebase_admin._apps:
 
 db = firestore.client() # connecting to firestore 
 
+def verify_integrity(stored_hash, event_id, text, timestamp):
+    """Recalculates the hash and compares it to the stored one."""
+    if not stored_hash:
+        return False
+    
+    # Recreate the exact same string format used in the upload script
+    combined_string = f"{event_id}|{text}|{timestamp}"
+    new_hash = hashlib.sha256(combined_string.encode()).hexdigest()
+    
+    return new_hash == stored_hash
+
 
 def get_incidents():
     incidents = []
     docs = db.collection("incidents").order_by("timestamp", direction=firestore.Query.DESCENDING).limit(100).stream()
+    
 
     for doc in docs:
         data = doc.to_dict()
+        stored_hash = data.get("integrity_hash")
 
         # Decrypt the main log data (usually a string)
         decrypted_event = decrypt_payload(data["data"])
         
         if decrypted_event is None:
             continue
+
+
+        # integritycheck    
+        is_verified = verify_integrity(
+            stored_hash,
+            decrypted_event.get("event_id"),
+            decrypted_event.get("raw_sanitised_text"),
+            decrypted_event.get("local_timestamp")
+        )
 
         # Handle ai_insights (stored as a list)
         ai_insights = None
@@ -50,7 +72,8 @@ def get_incidents():
             "ai_insights": ai_insights,
             "analysis_status": data.get("analysis_status", "pending"),
             "timestamp": data.get("timestamp"),
-            "user_notes": decrypted_notes 
+            "user_notes": decrypted_notes,
+            "is_verified": is_verified
         })
 
     return incidents
