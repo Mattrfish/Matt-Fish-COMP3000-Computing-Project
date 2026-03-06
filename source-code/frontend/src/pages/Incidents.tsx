@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { Search, Filter, X, Calendar, AlertTriangle, Shield, Network, FileDown, ClipboardList, ShieldCheck } from "lucide-react";
+import { Search, Filter, X, Calendar, AlertTriangle, Shield, Network, FileDown, ClipboardList, ShieldCheck, UserCircle } from "lucide-react";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 const API_KEY = import.meta.env.VITE_API_KEY
@@ -35,6 +35,13 @@ interface Incident {
   user_notes?: string[]; 
   is_verified?: boolean;
   completed_steps?: number[];
+  assigned_to?: string;
+}
+
+interface TeamMember {
+  id: string; // Firestore document ID
+  name: string; 
+  email?: string; 
 }
 
 export default function Incidents() {
@@ -43,6 +50,7 @@ export default function Incidents() {
   const [loading, setLoading] = useState(true);
   const [note, setNote] = useState("");
   const [viewMode, setViewMode] = useState<string>("details");
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
   // Search and filter states
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,9 +59,11 @@ export default function Incidents() {
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
   const [showFilters, setShowFilters] = useState(false);
 
+  // Consolidated useEffect: Fetches both incidents and users on load
   useEffect(() => {
     console.log("Using API Key:", API_KEY); 
     fetchIncidents();
+    fetchTeamMembers();
   }, []);
 
   // Reset view mode when selecting a new incident
@@ -61,7 +71,50 @@ export default function Incidents() {
       if (selectedIncident) setViewMode("details");
   }, [selectedIncident]);
 
-  // Add this function to handle checkbox clicks
+  const fetchTeamMembers = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/users", {
+        headers: {
+          "X-API-Key": API_KEY
+        }
+      });
+      if (!res.ok) throw new Error("Failed to fetch users");
+      
+      const data: TeamMember[] = await res.json();
+      setTeamMembers(data);
+    } catch (err) {
+      console.error("Failed to load team members", err);
+    }
+  };
+
+  // Fixed Assignment Handler
+  const handleAssignUser = async (docId: string, userId: string) => {
+    if (!selectedIncident) return;
+
+    // 1. Optimistic Update (Update UI immediately)
+    const updatedIncident = { ...selectedIncident, assigned_to: userId };
+    setSelectedIncident(updatedIncident);
+    setIncidents(prev => prev.map(inc => inc.id === docId ? updatedIncident : inc));
+
+    // 2. Send to API
+    try {
+      const res = await fetch(`http://localhost:8000/api/incidents/${docId}/assign`, {
+        method: 'PATCH',
+        headers: { 
+            'Content-Type': 'application/json',
+            "X-API-Key": API_KEY 
+        },
+        body: JSON.stringify({ assigned_to: userId })
+      });
+      
+      if (!res.ok) {
+        throw new Error("Failed to assign user");
+      }
+    } catch (err) {
+      console.error("Failed to assign user", err);
+    }
+  };
+
   const handleToggleStep = async (docId: string, stepIndex: number) => {
     if (!selectedIncident) return;
 
@@ -93,7 +146,6 @@ export default function Incidents() {
       });
     } catch (err) {
       console.error("Failed to save progress", err);
-      // Optional: Revert state here if it fails
     }
   };
 
@@ -573,6 +625,25 @@ export default function Incidents() {
               </div>
             </div>
 
+            <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border-2 border-gray-100">
+              <UserCircle size={20} className="text-gray-400" />
+              <label className="text-sm font-bold text-gray-600">Assign To:</label>
+              <select
+                value={selectedIncident.assigned_to || ""}
+                onChange={(e) => handleAssignUser(selectedIncident.id, e.target.value)}
+                className="flex-1 bg-white border-2 border-gray-200 rounded-lg px-3 py-2 text-sm font-medium focus:border-purple-500 outline-none transition-all cursor-pointer"
+              >
+                <option value="">Unassigned</option>
+                {/* Map over the dynamic state instead of the hardcoded array */}
+                {teamMembers.map(member => (
+                  <option key={member.id} value={member.id}>
+                    {member.name} {member.email ? `(${member.email})` : ''}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+
             {/* Mitigation / Details Switcher */}
             {viewMode === "mitigation" ? (
               /* --- MITIGATION VIEW --- */
@@ -930,6 +1001,7 @@ export default function Incidents() {
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Severity</th>
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Integrity</th>
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
+                  <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Assignee</th>
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Time</th>
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Event Summary</th>
                   <th className="p-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">Investigation</th>
@@ -965,6 +1037,11 @@ export default function Incidents() {
                         <span className={`px-3 py-1 rounded-lg text-[9px] font-black border-2 uppercase ${getStatusStyles(item.analysis_status)}`}>
                           {item.analysis_status}
                         </span>
+                      </td>
+                      <td className="p-5 text-[11px] font-bold text-gray-600">
+                        {item.assigned_to 
+                          ? teamMembers.find(m => m.id === item.assigned_to)?.name || "Unknown User"
+                          : <span className="text-gray-400 italic">Unassigned</span>}
                       </td>
                       <td className="p-5 text-xs font-bold text-gray-500">{formatTimestamp(item.timestamp)}</td>
                       <td className="p-5 text-[11px] text-gray-400 font-mono truncate max-w-62.5 italic">{item.event.raw_sanitised_text}</td>
