@@ -283,8 +283,19 @@ def process_batch(batch_list):
             
             if event_id in results_map and doc_id:
                 res = results_map[event_id]
-                risk = res['risk_score']
-                summary = res['summary']
+                risk = res.get("risk_assessment", {}).get("score", 1)
+                summary = res.get("analysis", {}).get("incident_overview", "No summary provided.")
+
+                raw_steps = res.get("mitigation_plan", [])
+                formatted_steps = [
+                    f"Step {step.get('step_number', '?')}: {step.get('action_title', 'Action')} - {step.get('detailed_instructions', '')}" 
+                    for step in raw_steps
+                ]
+
+                # Provide a fallback if the LLM hallucinated an empty list
+                if not formatted_steps:
+                    formatted_steps = ["Review logs manually"]
+                    
                 # Encrypt the INDIVIDUAL insight
                 encrypted_insights = encrypt_payload({
                     "summary": summary,
