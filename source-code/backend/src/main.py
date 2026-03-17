@@ -26,13 +26,17 @@ app.add_middleware(
 async def audit_logging_middleware(request: Request, call_next):
     start_time = time.time()
     
-    # Process the request
+    # Process the request first
     response = await call_next(request)
     
+    # prevented 403 Forbidden or 404 Not Found errors to Firestore
+    # This prevents unauthenticated attackers from spamming db and draining quota.
+    if response.status_code in [403, 404]:
+        return response
+        
     process_time = time.time() - start_time
 
     # Log details to Firestore "audit_logs" collection
-
     try:
         log_data = {
             "method": request.method,
@@ -43,7 +47,6 @@ async def audit_logging_middleware(request: Request, call_next):
             "process_time": process_time,
             "user_agent": request.headers.get("user-agent")
         }
-        # Write to Firestore asynchronously
         db.collection("audit_logs").add(log_data)
     except Exception as e:
         print(f"Failed to write audit log: {e}")
