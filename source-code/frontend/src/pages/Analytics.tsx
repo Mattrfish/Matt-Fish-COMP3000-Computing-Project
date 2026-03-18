@@ -524,7 +524,7 @@ export default function Analytics() {
         </div>
         
         <p className="text-center text-[10px] font-bold text-slate-300 mt-4 uppercase tracking-[0.2em]">
-          Security Assistant Dashboard • Interface Built by Matthew Fish
+          Security Incident Response Assistant Dashboard • Interface Built by Matthew Fish
         </p>
       </footer>
     </div>
