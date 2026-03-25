@@ -8,14 +8,22 @@ def analyze_logs_with_llm(provider: str, api_key: str, persona_instruction: str,
     if not api_key:
         raise ValueError(f"API Key for {provider.upper()} is missing. Please add it in Settings.")
 
+    # NEW: Calculate count to force compliance
+    log_entries = combined_text.strip().split('\n')
+    expected_count = len(log_entries)
+    
     full_prompt = f"""
             {persona_instruction}
 
             LOGS:
             {combined_text}
             
-            You must strictly return ONLY a JSON list of objects matching the exact structure below. 
-            Do not include markdown formatting like ```json outside of the actual JSON output.
+           CRITICAL INSTRUCTIONS:
+            1. There are exactly {expected_count} log entries above.
+            2. You MUST return a JSON list containing exactly {expected_count} objects.
+            3. Each object MUST correspond to one of the unique IDs provided in the logs.
+            4. DO NOT skip any IDs. If a log is low risk, still provide a response with a risk_score of 1.
+            5. Return ONLY the JSON list. No conversational text.
 
             [
                 {{ 
