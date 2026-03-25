@@ -57,7 +57,7 @@ function App() {
     <div className="min-h-screen bg-[#FDFCFE]">
       
       <NavBar 
-        brandName="SOC Engine" 
+        brandName="SIRA" 
         imageSrcPath={imagePath} 
         navItems={navItems}
         onSelect={(item) => setActivePage(item)}
