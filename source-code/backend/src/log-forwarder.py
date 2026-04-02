@@ -107,7 +107,7 @@ KNOWN_SAFE_PATTERNS = [
 ]
 
 # adding batching for brute force to reduce lines being parsed to llm at once
-BATCH_LIMIT = 10 # Number of suspicious lines to collect before calling LLM
+BATCH_LIMIT = 50 # Number of suspicious lines to collect before calling LLM
 MAX_WAIT_SECONDS = 90 # 1 1/2 mins 
 last_batch_time = time.time() # Initialise the timer
 suspicious_buffer = [] # Temporary list to hold lines
@@ -225,8 +225,15 @@ def process_batch(batch_list):
             LOGS:
             {combined_text}
             
+            You will receive a batch containing multiple security logs. You MUST analyze EVERY SINGLE LOG ENTRY provided. 
+            For every individual log in the batch, you must generate a corresponding analysis object. If you receive 10 logs, you MUST return a JSON list containing exactly 10 objects. Do not group them together; maintain a strict 1-to-1 ratio.
+
             You must strictly return ONLY a JSON list of objects matching the exact structure below. 
             Do not include markdown formatting like ```json outside of the actual JSON output.
+
+            CRITICAL JSON RULE: You must properly escape all backslashes (\) in your output. 
+            For example, Windows file paths or regex patterns must be written with double backslashes like "C:\\Windows\\System32", NEVER as "C:\Windows\System32". 
+            Do not use raw tabs, newlines, or unescaped quotes inside the JSON string values.
 
             [
                 {{ 
