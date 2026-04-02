@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import { Save, Shield, Briefcase, Wrench, LogOut, User, AlertTriangle, Bell, BellOff, MailWarning, Zap, Layout, BellRing, Bot, Key, Cpu } from "lucide-react";
+import { Save, Shield, Briefcase, Wrench, LogOut, User, AlertTriangle, Bell, BellOff, MailWarning, Zap, Layout, BellRing } from "lucide-react";
 import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore"; 
 import { db, auth } from "../firebase"; 
 import { signOut, deleteUser } from "firebase/auth"; 
-
-// api key for backend authentication from environment variables
-const BACKEND_API_KEY = import.meta.env.VITE_API_KEY;
 
 // main settings component for managing user preferences
 export default function Settings() {
@@ -13,11 +10,6 @@ export default function Settings() {
     const [techLevel, setTechLevel] = useState("business_owner");
     const [notificationLevel, setNotificationLevel] = useState("critical");
     const [appNotificationLevel, setAppNotificationLevel] = useState("high");
-    
-    // NEW: state for modular ai configuration (individual user settings)
-    const [llmProvider, setLlmProvider] = useState("gemini");
-    const [llmApiKey, setLlmApiKey] = useState("");
-    
     const [saving, setSaving] = useState(false);
 
     // load existing user preferences from firestore on mount
@@ -36,11 +28,6 @@ export default function Settings() {
                     if (data.tech_level) setTechLevel(data.tech_level);
                     if (data.notification_level) setNotificationLevel(data.notification_level);
                     if (data.app_notification_level) setAppNotificationLevel(data.app_notification_level);
-                    
-                    // NEW: Load per-user AI settings
-                    if (data.llm_provider) setLlmProvider(data.llm_provider);
-                    // we don't display the encrypted key for security, just a placeholder if it exists
-                    if (data.llm_api_key) setLlmApiKey("********");
                 }
             } catch (err) {
                 console.error("failed to load settings:", err);
@@ -65,24 +52,8 @@ export default function Settings() {
                 notification_level: notificationLevel,
                 app_notification_level: appNotificationLevel
             }, { merge: true });
-
-            // NEW: send AI settings to backend for encryption and per-user storage
-            // Only send the key if the user actually changed it (it's not the placeholder)
-            const aiPayload: any = { llm_provider: llmProvider };
-            if (llmApiKey !== "********") {
-                aiPayload.llm_api_key = llmApiKey;
-            }
-
-            await fetch(`http://localhost:8000/api/users/${user.uid}/ai-settings`, {
-                method: "PATCH",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "X-API-Key": BACKEND_API_KEY 
-                },
-                body: JSON.stringify(aiPayload)
-            });
             
-            alert("account preferences and secure AI settings updated successfully!");
+            alert("account preferences updated successfully!");
         } catch(e) {
             console.error(e);
             alert("error saving settings");
@@ -171,26 +142,6 @@ export default function Settings() {
         </div>
     );
 
-    // NEW: reusable component for selecting individual ai service providers
-    const ProviderCard = ({ id, label, icon: Icon, description }: any) => (
-        <div 
-            onClick={() => setLlmProvider(id)}
-            className={`cursor-pointer p-4 rounded-xl border-2 transition-all flex items-center gap-4 ${
-                llmProvider === id 
-                ? "border-indigo-500 bg-indigo-50" 
-                : "border-slate-200 hover:border-slate-300 bg-white"
-            }`}
-        >
-            <div className={`p-2 rounded-lg ${llmProvider === id ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-500"}`}>
-                <Icon size={20} />
-            </div>
-            <div>
-                <h3 className={`font-bold text-sm ${llmProvider === id ? "text-indigo-900" : "text-slate-700"}`}>{label}</h3>
-                <p className="text-xs text-slate-500">{description}</p>
-            </div>
-        </div>
-    );
-
     return (
         <div className="p-8 max-w-4xl mx-auto space-y-8">
             <div>
@@ -208,44 +159,6 @@ export default function Settings() {
                     <LevelCard id="business_owner" label="Business Owner" icon={Briefcase} description="plain english. focuses on risk, business impact, and whether you need to call an expert." />
                     <LevelCard id="it_support" label="IT Support" icon={Wrench} description="action-oriented. suggests standard fixes, firewall rules, and password resets." />
                     <LevelCard id="soc_analyst" label="SOC Analyst" icon={Shield} description="deep technical dive. analyzes raw payloads, attack vectors, and iocs." />
-                </div>
-
-                {/* NEW: individual ai service engine configuration */}
-                <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2 pt-6 border-t border-slate-100">
-                    <Bot size={20} className="text-indigo-500" />
-                    Secure AI Configuration
-                </h3>
-                
-                <div className="space-y-6 mb-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <ProviderCard 
-                            id="gemini" 
-                            label="Google Gemini" 
-                            icon={Zap} 
-                            description="Uses Gemini 2.5 Flash Lite"
-                        />
-                        <ProviderCard 
-                            id="openai" 
-                            label="ChatGPT (OpenAI)" 
-                            icon={Cpu} 
-                            description="Uses GPT-4o-mini"
-                        />
-                    </div>
-
-                    <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-600 flex items-center gap-2">
-                            <Key size={16} />
-                            {llmProvider === "gemini" ? "Gemini API Key" : "OpenAI API Key"}
-                        </label>
-                        <input 
-                            type="password"
-                            value={llmApiKey}
-                            onChange={(e) => setLlmApiKey(e.target.value)}
-                            placeholder={`Paste your ${llmProvider.toUpperCase()} API key here...`}
-                            className="w-full px-4 py-3 border-2 border-slate-100 rounded-xl text-sm focus:border-indigo-400 outline-none bg-slate-50 font-mono"
-                        />
-                        <p className="text-[10px] text-slate-400">Your key is encrypted before being saved to your account profile.</p>
-                    </div>
                 </div>
 
                 {/* email notifications configuration */}
