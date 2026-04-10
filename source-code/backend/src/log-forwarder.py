@@ -396,7 +396,7 @@ def log_sanitiser(new_lines, file_name_only):
         sanitised_line = re.sub(pattern_mac, "[MAC_REDACTED]", text_to_analyze) # repalce all mac oocurances with redacted text
         # New System-Level Sanitisation
         sanitised_line = re.sub(pattern_email, "[EMAIL_REDACTED]", sanitised_line)
-        # sanitised_line = re.sub(pattern_win_user_path, "[WINDOWS_USER_DIR]", sanitised_line)
+        sanitised_line = re.sub(pattern_win_user_path, "[WINDOWS_USER_DIR]", sanitised_line)
         sanitised_line = re.sub(pattern_passwords, "[PASSWORD_REDACTED]", sanitised_line)
 
         # Extract both IPv4 and IPv6 addresses
@@ -587,3 +587,4 @@ if __name__ == "__main__":
             process_batch(suspicious_buffer)
         print("Shutdown complete. Goodbye!")
         sys.exit(0)
+
