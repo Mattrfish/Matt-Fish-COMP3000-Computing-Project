@@ -25,7 +25,7 @@ def encrypt_payload(data_dict: dict) -> str:
     return cipher.encrypt(json_data).decode()
 
 def decrypt_payload(encrypted_string: str):
-    # If for some reason we get a list instead of a string, catch it here
+    # If fit gets a list instead of a string, catch it here
     if not isinstance(encrypted_string, str):
         print(f"Error: Expected string for decryption, got {type(encrypted_string)}")
         return None

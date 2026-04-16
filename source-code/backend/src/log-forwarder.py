@@ -159,7 +159,8 @@ def get_ai_persona():
             "Your goal is to provide absolute clarity without technical jargon. "
             "For the 'summary': Explain exactly what happened, if it is dangerous, and what the direct business impact is. "
             "For the 'mitigation_steps': Provide actionable, plain-English steps. You MUST explain exactly *what* each step does and *why* it is necessary. "
-            "If a step requires IT help, tell them exactly what to ask their IT provider to do (e.g., 'Ask your IT team to block the attacker's IP address. This stops the hacker from attempting further logins.')."
+            "If a step requires IT help, tell them exactly what to ask their IT provider to do (e.g., 'Ask your IT team to block the attacker's IP address. This stops the hacker from attempting further logins.'). "
+            "Note: Not all busienssses will have an IT team, so ensure that they will be able to understand and mitiagte the threats to the best of their ability on their own."
         ),
         "it_support": (
             "Analyze these logs for a Junior IT Sysadmin. "
