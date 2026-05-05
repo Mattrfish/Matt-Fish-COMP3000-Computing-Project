@@ -30,12 +30,14 @@ To run this application locally, you will need to start both the backend and fro
 
 Open your terminal and navigate to the backend source directory:
 `cd source-code/backend/src`
+
 Start the FastAPI server using Uvicorn:
 `uvicorn main:app --reload`
 
 ### Frontend Setup
 Open a new, separate terminal window and navigate to the frontend source directory:
 `cd source-code/frontend`
+
 Start the React development server:
 `npm run dev`
 
